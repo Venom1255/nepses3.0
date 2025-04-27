@@ -17,9 +17,16 @@ const app = express();
 
 // Middleware
 // --- SECURE CORS CONFIGURATION ---
-const allowedOrigin = 'http://localhost:8098';
+// Update this to your actual Hostinger frontend domain
+const allowedOrigins = ['http://localhost:8098', 'https://nepses.sparkcodepvtltd.com/'];
 const corsOptions = {
-  origin: allowedOrigin,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
